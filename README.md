@@ -4,9 +4,9 @@
 # NEST-Score
 
 This repository includes the R package `NEST-Score` (NEighbourhood
-Sample homogeneiTy-Score) as introduced in ‘*Reconstitution of Human
-Brain Cell Diversity in Organoids via Four Protocols*’ (Naas et
-al. 2024, in preparation).
+Sample homogeneiTy-Score) as introduced in “*Reconstitution of Human
+Brain Cell Diversity in Organoids via Four Protocols*” ([Naas et al.
+2024](#ref-naas_reconstitution_2024)).
 
 It is compatible with a typical `Seurat`([Hao et al.
 2024](#ref-hao_dictionary_2024)) workflow to analyse single-cell
@@ -146,6 +146,16 @@ Hoffman, Austin Hartman, Avi Srivastava, et al. 2024. “Dictionary
 Learning for Integrative, Multimodal and Scalable Single-Cell Analysis.”
 *Nature Biotechnology* 42 (2): 293–304.
 <https://doi.org/10.1038/s41587-023-01767-y>.
+
+</div>
+
+<div id="ref-naas_reconstitution_2024" class="csl-entry">
+
+Naas, Julia, Meritxell Balmana, Laurenz Holcik, Maria Novatchkova, Lina
+Dobnikar, Thomas Krausgruber, Sabrina Ladstatter, et al. 2024.
+“Reconstitution of Human Brain Cell Diversity in Organoids via Four
+Protocols.” *bioRxiv*, 2024.11.15.623576.
+<https://doi.org/10.1101/2024.11.15.623576>.
 
 </div>
 
