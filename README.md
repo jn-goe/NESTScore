@@ -6,7 +6,7 @@
 This repository includes the R package `NEST-Score` (NEighbourhood
 Sample homogeneiTy-Score) as introduced in “*Reconstitution of Human
 Brain Cell Diversity in Organoids via Four Protocols*” ([Naas et al.
-2024](#ref-naas_reconstitution_2024)).
+2024](#ref-naas_reconstitution_2024), *bioRxiv*).
 
 It is compatible with a typical `Seurat`([Hao et al.
 2024](#ref-hao_dictionary_2024)) workflow to analyse single-cell
