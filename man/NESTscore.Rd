@@ -14,7 +14,9 @@ NESTscore(
   return_pairwise_eval = FALSE,
   show_heatmap = FALSE,
   heatmap_col = "darkred",
-  name_suffix = ""
+  name_suffix = "",
+  scale_column = T,
+  cluster_rows_cols = F
 )
 }
 \arguments{
@@ -37,6 +39,10 @@ NESTscore(
 \item{heatmap_col}{color for the optimal batch frequency in the pairwise batch-to-batch heatmap (only considered if \code{return_pairwise_eval = TRUE} and \code{show_heatmap = TRUE})}
 
 \item{name_suffix}{additional suffix for new NEST-Score metadata column name}
+
+\item{scale_column}{scale columns to sum to 1}
+
+\item{cluster_rows_cols}{whether to cluster rows and columns in the resulting heatmap (using correlation)}
 }
 \value{
 Returns a list including the Seurat object \code{seuratobj} with cell-wise NEST-Score stored in an additional metadata column and the theoretical upper and lower bound of the NEST-Score \code{NESTscore_limits} for the considered batch assignment.

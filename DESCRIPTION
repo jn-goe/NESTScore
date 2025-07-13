@@ -1,14 +1,16 @@
 Package: NESTscore
 Title: NEST-Score
-Version: 0.0.1
+Version: 1.0.0
 Authors@R: 
     person("Julia", "Naas", , "julia.naas@meduniwien.ac.at", role = c("aut", "cre"))
 Author: Julia Naas <julia.naas@meduniwien.ac.at> [aut, cre]
-Description: The NEST-Score (NEighbourhood Sample homogeneiTy-Score) evaluates how well the samples in an aggregated dataset mix in a cell's neighborhood in Principal Component space.
+Description: The NEST-Score (NEighbourhood Sample homogeneiTy-Score)
+    evaluates how well the samples in an aggregated dataset mix in a
+    cell's neighborhood in Principal Component space.
 License: AGPL (>= 3)
 BugReports: https://github.com/jn-goe/NESTscore/issues/
 Encoding: UTF-8
 Import: Seurat,grDevices,methods,pheatmap,reshape2,ggplot2
-Packaged: 2024-09-04 19:57:17.203151
+Packaged: 2025-07-13 17:15:54.545918
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2

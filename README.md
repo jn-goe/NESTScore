@@ -8,7 +8,7 @@ Sample homogeneiTy-Score) as introduced in “*Reconstitution of Human
 Brain Cell Diversity in Organoids via Four Protocols*” ([Naas et al.
 2024](#ref-naas_reconstitution_2024), *bioRxiv*).
 
-It is compatible with a typical `Seurat`([Hao et al.
+It is compatible with a typical `Seurat` ([Hao et al.
 2024](#ref-hao_dictionary_2024)) workflow to analyse single-cell
 RNA-sequencing (scRNA-seq) data.
 
@@ -59,12 +59,13 @@ cell in the dataset, which has non-uniform global frequencies and shows
 a near-perfect mixedness of samples across the whole dataset:
 
 ``` r
-obj$sample_random <- sample(c(rep(1,3),rep(2,3),3,4), dim(obj)[1], replace = T)
+set.seed(123)
+obj$sample_random <- sample(c(rep(1,2),rep(2,2),3,4), dim(obj)[1], replace = T)
 obj$sample_random <- paste0("sample ", obj$sample_random)
 table(obj$sample_random)
 #> 
 #> sample 1 sample 2 sample 3 sample 4 
-#>     1009      987      319      323
+#>      879      885      441      433
 
 DimPlot(obj, group.by = "sample_random")
 ```
@@ -118,21 +119,31 @@ the other hand, cells of sample 1 and 2 mix and hence have higher
 NEST-Scores.
 
 The NEST-Score function also provides pairwise evaluations of how well
-two considered samples mix on average:
+two considered samples mix on average, either plotting the average
+scaled frequencies across cells of a sample
 
 ``` r
 NESTres <- NESTscore(obj, group_by = "sample_random", k_nn = 30, ndims = 50, 
-                     return_pairwise_eval = T, show_heatmap = T)
+                     return_pairwise_eval = T, show_heatmap = T, scale_column = F)
 ```
 
 <img src="man/figures/README-nest3-1.png" width="50%" />
 
+or column-wise scaled:
+
 ``` r
-NESTres <- NESTscore(obj, group_by = "sample_grouped", k_nn = 30, ndims = 50, 
-                     return_pairwise_eval = T, show_heatmap = T)
+NESTres <- NESTscore(obj, group_by = "sample_random", k_nn = 30, ndims = 50, 
+                     return_pairwise_eval = T, show_heatmap = T, scale_column = T)
 ```
 
 <img src="man/figures/README-nest4-1.png" width="50%" />
+
+``` r
+NESTres <- NESTscore(obj, group_by = "sample_grouped", k_nn = 30, ndims = 50, 
+                     return_pairwise_eval = T, show_heatmap = T, scale_column = T)
+```
+
+<img src="man/figures/README-nest5-1.png" width="50%" />
 
 #### References
 
