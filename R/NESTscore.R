@@ -43,6 +43,8 @@ KLD <- function(P,Q) {
 #' @param show_heatmap plots pairwise batch-to-batch matrix as heatmap (only considered if `return_pairwise_eval = TRUE`)#' @param name_suffix additional suffix for new NEST-Score metadata column name
 #' @param heatmap_col color for the optimal batch frequency in the pairwise batch-to-batch heatmap (only considered if `return_pairwise_eval = TRUE` and `show_heatmap = TRUE`)
 #' @param name_suffix additional suffix for new NEST-Score metadata column name
+#' @param scale_column scale columns to sum to 1
+#' @param cluster_rows_cols whether to cluster rows and columns in the resulting heatmap (using correlation)
 #' @returns Returns a list including the Seurat object `seuratobj` with cell-wise NEST-Score stored in an additional metadata column and the theoretical upper and lower bound of the NEST-Score `NESTscore_limits` for the considered batch assignment.
 #'          If `return_pairwise_eval = TRUE` the list also includes a pairwise batch-to-batch evaluation matrix `pairwise_matrix` and helpful plotting parameters `proposed_params_pheatmap` for using `pheatmap()`.
 #' @description
@@ -61,7 +63,9 @@ NESTscore <- function(obj,
                       return_pairwise_eval = FALSE,
                       show_heatmap = FALSE,
                       heatmap_col = "darkred",
-                      name_suffix = "") {
+                      name_suffix = "",
+                      scale_column = T,
+                      cluster_rows_cols = F) {
 
   # catch missing reductions, metadata or wrong assays
   if(methods::is(obj@reductions[[reduction_in]])[1] != "DimReduc") {
@@ -142,13 +146,21 @@ NESTscore <- function(obj,
     colnames(heatmap.matrix.ratio) <- rownames(heatmap.matrix.ratio) <- levels(batch)
 
     # average scaled frequencies for each sample
-    for(b in levels(batch)) {
-      freq.mat.sub <- freq.mat.glob.scaled[which(batch == b),]
-      heatmap.matrix.ratio[b,] <- colMeans(freq.mat.sub)[colnames(heatmap.matrix.ratio)]
+    if(!scale_column) {
+      for(b in levels(batch)) {
+        freq.mat.sub <- freq.mat.glob.scaled[which(batch == b),]
+        heatmap.matrix.ratio[b,] <- colMeans(freq.mat.sub)[colnames(heatmap.matrix.ratio)]
+      }
+    } else {
+      for(b in levels(batch)) {
+        freq.mat.sub <- freq.mat[which(batch == b),]
+        heatmap.matrix.ratio[b,] <- colMeans(freq.mat.sub)[colnames(heatmap.matrix.ratio)]
+      }
+      # scale with global batch sample frequency
+      heatmap.matrix.ratio <- t(apply(heatmap.matrix.ratio, 1, function(x) x/global_frequency))
+      # scale to sum to 1
+      heatmap.matrix.ratio <- t(apply(heatmap.matrix.ratio, 1, function(x) x/sum(x)))
     }
-
-    heatmap.matrix.ratio <- apply(heatmap.matrix.ratio, 2, function(x) x/sum(x, na.rm = T))
-    heatmap.matrix.ratio <- apply(heatmap.matrix.ratio, 1, function(x) x/sum(x, na.rm = T))
 
     color_vec = c(grDevices::colorRampPalette(c("grey90",heatmap_col))(which.min(abs(seq(0,1,0.005)-1/length(levels(batch))))),
                   grDevices::colorRampPalette(c(heatmap_col,"grey20"))((length(seq(0,1,0.005)) - 1 - which.min(abs(seq(0,1,0.005)-1/length(levels(batch)))))))
@@ -156,8 +168,10 @@ NESTscore <- function(obj,
 
     if(show_heatmap) {
       pheatmap::pheatmap(heatmap.matrix.ratio,
-                         cluster_rows = F,
-                         cluster_cols = F,
+                         cluster_rows = cluster_rows_cols,
+                         cluster_cols = cluster_rows_cols,
+                         clustering_distance_cols = "correlation",
+                         clustering_distance_rows = "correlation",
                          color = grDevices::adjustcolor(color_vec,.8),
                          breaks = breaks_vec,
                          na_col = "transparent",
@@ -220,9 +234,9 @@ NEST_threshold_proposal <- function(obj,
     thresh_freq <- thresh_distribution
     thresh_freq <- thresh_freq/sum(thresh_freq)
   }
-  
+
   thresh <- -KLD(thresh_freq, uniform_freq)
-  
+
   return(thresh)
 }
 
