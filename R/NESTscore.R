@@ -129,7 +129,7 @@ NESTscore <- function(obj,
   # scale with global batch sample frequency
   freq.mat.glob <- t(apply(freq.mat, 1, function(x) x/global_frequency))
   # scale to sum to 1
-  freq.mat.glob.scaled <- t(apply(freq.mat, 1, function(x) x/sum(x)))
+  freq.mat.glob.scaled <- t(apply(freq.mat.glob, 1, function(x) x/sum(x)))
 
   KLD_vec <- t(apply(freq.mat.glob.scaled[,colnames(freq.mat.glob.scaled) %in% levels(batch)], 1, function(x) KLD(x, uniform_freq)))[1,]
 
@@ -323,7 +323,7 @@ NEST_search_k <- function(obj,
 
     freq.mat <- t(apply(env.batch, 1, batch.table.freq, batch_names = names(table(batch))))
     freq.mat.glob <- t(apply(freq.mat, 1, function(x) x/global_frequency))
-    freq.mat.glob.scaled <- t(apply(freq.mat, 1, function(x) x/sum(x)))
+    freq.mat.glob.scaled <- t(apply(freq.mat.glob, 1, function(x) x/sum(x)))
 
     KLD_vec <- t(apply(freq.mat.glob.scaled[,colnames(freq.mat.glob.scaled) %in% levels(batch)], 1, function(x) KLD(x, uniform_freq)))[1,]
     mix_score_mat[,count] <- -as.numeric(KLD_vec)
