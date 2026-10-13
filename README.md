@@ -21,6 +21,10 @@ You can install the development version of `NEST-Score` R Package with:
 devtools::install_github("jn-goe/NESTScore")
 ```
 
+## Updates
+
+- **2026-10-13:** Add missing global-frequency scaling in NEST-Score, which affected scores for unequal group sizes (see issue #1).
+
 ## Example
 
 This is an exemplary workflow using NEST-Score on the PBMC 3k dataset
